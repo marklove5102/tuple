@@ -1,9 +1,7 @@
 # The Art of C++ / Tuple
 
 [![Release](https://img.shields.io/github/release/taocpp/tuple.svg)](https://github.com/taocpp/tuple/releases/latest)
-[![Download](https://api.bintray.com/packages/conan/conan-center/taocpp-tuple%3A_/images/download.svg)](https://bintray.com/conan/conan-center/taocpp-tuple%3A_/_latestVersion)
-[![TravisCI](https://travis-ci.org/taocpp/tuple.svg)](https://travis-ci.org/taocpp/tuple)
-[![AppVeyor](https://ci.appveyor.com/api/projects/status/github/taocpp/tuple?svg=true)](https://ci.appveyor.com/project/taocpp/tuple)
+[![Conan Center](https://img.shields.io/conan/v/taocpp-tuple)](https://conan.io/center/recipes/taocpp-tuple)
 
 [The Art of C++](https://taocpp.github.io/) / Tuple is a C++11 header-only proof-of-concept implementation of
 [`std::tuple`](http://en.cppreference.com/w/cpp/utility/tuple).
@@ -14,7 +12,7 @@ Why another implementation of `std::tuple`? To provide a proof-of-concept that,
 when avoiding recursion, code can benefit in significant ways. I prepared a talk
 about it, including some benchmarks.
 
-[Download presentation](https://github.com/taocpp/tuple/blob/main/Variadic%20Templates.pdf)
+[Download presentation](https://github.com/taocpp/tuple/blob/main/doc/variadic_templates.pdf)
 
 TL;DR: GCC 5 on Linux with libstdc++'s `std::tuple` requires 19.6s and an instantiation
 depth of at least 3.719 to compile an
@@ -41,7 +39,7 @@ from avoiding recursion.
 
 You can download and install [The Art of C++](https://taocpp.github.io/) / Tuple using the [Conan](https://github.com/conan-io/conan) package manager:
 
-    conan install taocpp-tuple/1.0.0@
+    conan install -r conancenter --requires="taocpp-tuple/1.0.0"
 
 The taocpp-tuple package in conan is kept up to date by Conan team members and community contributors.
 If the version is out-of-date, please [create an issue or pull request](https://github.com/conan-io/conan-center-index) on the Conan Center Index repository.
