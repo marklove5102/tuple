@@ -1,0 +1,32 @@
+name: Windows
+
+on:
+  push:
+    paths-ignore:
+      - 'README.md'
+      - 'doc/**'
+  pull_request:
+    paths-ignore:
+      - 'README.md'
+      - 'doc/**'
+  workflow_dispatch:
+
+jobs:
+  vs2022:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v5
+
+    - name: CMake Configure
+      shell: pwsh
+      run: cmake --preset ${{ matrix.cxx }}-release-dev -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/taocpp-install
+
+    - name: Build project files
+      run: cmake --build --preset ${{ matrix.cxx }}-release-dev
+
+    - name: Run tests
+      run: cmake --build --preset ${{ matrix.cxx }}-release-dev --target test
+
+    - name: Install Taocpp Tuple
+      run: cmake --build --preset ${{ matrix.cxx }}-release-dev --target install
