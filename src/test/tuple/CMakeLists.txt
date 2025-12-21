@@ -1,4 +1,5 @@
-cmake_minimum_required (VERSION 3.3.0 FATAL_ERROR)
+cmake_minimum_required (VERSION 3.15)
+project (taocpp-tuple-tests LANGUAGES CXX)
 
 set (test_sources
   tuple_benchmark.cpp
@@ -20,16 +21,7 @@ foreach (testsourcefile ${test_sources})
   set (exename "tao-tuple-test-${exename}")
   add_executable (${exename} ${testsourcefile})
   target_link_libraries (${exename} PRIVATE taocpp::tuple)
-  set_target_properties (${exename} PROPERTIES
-    CXX_STANDARD 11
-    CXX_STANDARD_REQUIRED ON
-    CXX_EXTENSIONS OFF
-  )
-  if (MSVC)
-    target_compile_options (${exename} PRIVATE /W4 /WX /utf-8)
-  else ()
-    target_compile_options (${exename} PRIVATE -pedantic -Wall -Wextra -Wshadow -Werror)
-  endif ()
+  target_compile_features(${exename} PRIVATE cxx_std_11)
   add_test (NAME ${exename} WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../.. COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${exename})
 endforeach (testsourcefile)
 

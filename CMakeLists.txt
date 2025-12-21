@@ -1,11 +1,6 @@
-cmake_minimum_required (VERSION 3.2.0 FATAL_ERROR)
+cmake_minimum_required (VERSION 3.15)
 
 project (taocpp-tuple VERSION 1.0.0 LANGUAGES CXX)
-
-# installation directories
-set (TAOCPP_TUPLE_INSTALL_INCLUDE_DIR "include" CACHE STRING "The installation include directory")
-set (TAOCPP_TUPLE_INSTALL_DOC_DIR "share/doc/tao/tuple" CACHE STRING "The installation doc directory")
-set (TAOCPP_TUPLE_INSTALL_CMAKE_DIR "share/taocpp-tuple/cmake" CACHE STRING "The installation cmake directory")
 
 # define a header-only library
 add_library (tuple INTERFACE)
@@ -15,19 +10,24 @@ target_include_directories (tuple INTERFACE
   $<INSTALL_INTERFACE:${TAOCPP_TUPLE_INSTALL_INCLUDE_DIR}>
 )
 
-# features used by taocpp/tuple
-target_compile_features (tuple INTERFACE
-  cxx_constexpr
-  cxx_noexcept
-  cxx_rvalue_references
+# get public headers files
+file (GLOB_RECURSE public_header_files CONFIGURE_DEPENDS
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/tao/tuple/*.hpp
+)
+# mark as public headers
+set_target_properties (tuple PROPERTIES
+  PUBLIC_HEADER "${public_header_files}"
 )
 
-# testing
-enable_testing ()
-option (TAOCPP_TUPLE_BUILD_TESTS "Build test programs" ON)
-if (TAOCPP_TUPLE_BUILD_TESTS)
+# features used by taocpp/tuple
+target_compile_features (tuple INTERFACE cxx_std_11)
+
+if (BUILD_TESTING AND PROJECT_IS_TOP_LEVEL)
+  enable_testing ()
   add_subdirectory (src/test/tuple)
 endif ()
+
+include(GNUInstallDirs)
 
 # install and export target
 install (TARGETS tuple EXPORT tuple-targets)
@@ -35,8 +35,8 @@ install (TARGETS tuple EXPORT tuple-targets)
 install (EXPORT tuple-targets
   FILE taocpp-tuple-config.cmake
   NAMESPACE taocpp::
-  DESTINATION ${TAOCPP_TUPLE_INSTALL_CMAKE_DIR}
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/taocpp-tuple
 )
 
-install (DIRECTORY include/ DESTINATION ${TAOCPP_TUPLE_INSTALL_INCLUDE_DIR})
-install (FILES LICENSE DESTINATION ${TAOCPP_TUPLE_INSTALL_DOC_DIR})
+install (DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install (FILES LICENSE DESTINATION ${CMAKE_INSTALL_DOCDIR})

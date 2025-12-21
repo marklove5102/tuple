@@ -1,0 +1,30 @@
+name: macOS
+
+on:
+  push:
+    paths-ignore:
+      - 'README.md'
+      - 'doc/**'
+  pull_request:
+    paths-ignore:
+      - 'README.md'
+      - 'doc/**'
+
+jobs:
+  xcode-macos-15:
+    runs-on: macos-15
+
+    steps:
+    - uses: actions/checkout@v5
+
+    - name: Configure CMake Project
+      run: cmake --preset unixlike-debug-dev -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/taocpp-install
+
+    - name: Build project files
+      run: cmake --build --preset unixlike-debug-dev
+
+    - name: Run tests
+      run: cmake --build --preset unixlike-debug-dev --target test
+
+    - name: Install Taocpp Tuple
+      run: cmake --build --preset unixlike-debug-dev --target install
