@@ -18,6 +18,11 @@ jobs:
     steps:
     - uses: actions/checkout@v5
 
+    - name: Set up MSVC dev cmd (x64)
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: x64
+
     - name: CMake Configure
       shell: pwsh
       run: cmake --preset msvc-release-dev -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/taocpp-install
